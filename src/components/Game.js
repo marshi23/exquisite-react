@@ -8,7 +8,38 @@ class Game extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      player: 1,
+      submissions: [],
+      isSubmitted: false
+    }
   }
+
+
+  onLineSubmit = (line) => {
+
+    const { submissions } = this.state;
+    let { player } = this.state;
+    submissions.push(line);
+    player += 1
+
+    this.setState({
+      submissions: submissions,
+      player: player,
+    })
+    console.log(this.state.submissions)
+  }
+
+  onShowFinalPoem = () => {
+    console.log('I want to a show poem - Game')
+    // return this.state.submissions
+
+    this.setState({isSubmitted: !this.state.isSubmitted})
+    console.log(this.state.isSubmitted)
+  }
+
+
 
   render() {
 
@@ -32,11 +63,16 @@ class Game extends Component {
           { exampleFormat }
         </p>
 
-        <RecentSubmission />
+        <RecentSubmission submissions={this.state.submissions}/>
 
-        <PlayerSubmissionForm />
 
-        <FinalPoem />
+        <PlayerSubmissionForm onLineSubmitCallback={this.onLineSubmit}/>
+
+        <FinalPoem
+        submissions={this.state.submissions}
+        onShowFinalPoemCallback={this.onShowFinalPoem}
+        isSubmitted={this.state.isSubmitted}
+        />
 
       </div>
     );
